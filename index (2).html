@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Personal Task Manager</title>
+  <style>
+    /* Basic Reset & Fonts */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f7fa;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2c3e50;
+    }
+
+    /* Input and button styling */
+    #taskInput {
+      width: 70%;
+      padding: 12px 15px;
+      font-size: 1rem;
+      border: 2px solid #3498db;
+      border-radius: 5px 0 0 5px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    #taskInput:focus {
+      border-color: #2980b9;
+      background: #eaf4fc;
+    }
+
+    #addTaskBtn {
+      width: 28%;
+      padding: 12px 0;
+      font-size: 1rem;
+      background-color: #3498db;
+      border: none;
+      border-radius: 0 5px 5px 0;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
+    }
+    #addTaskBtn:hover {
+      background-color: #2980b9;
+      box-shadow: 0 6px 10px rgba(41, 128, 185, 0.4);
+    }
+
+    /* Task list */
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin-top: 30px;
+    }
+
+    li {
+      background: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeInUp 0.4s forwards;
+      transition: background-color 0.3s ease;
+    }
+    li:hover {
+      background-color: #f0f8ff;
+    }
+
+    /* Task text */
+    li span {
+      cursor: pointer;
+      user-select: none;
+      flex-grow: 1;
+      transition: color 0.3s ease, text-decoration 0.3s ease;
+    }
+
+    /* Completed task style */
+    .completed {
+      text-decoration: line-through;
+      color: #95a5a6;
+    }
+
+    /* Delete button */
+    li button {
+      background-color: #e74c3c;
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      margin-left: 15px;
+      box-shadow: 0 2px 5px rgba(231, 76, 60, 0.4);
+    }
+    li button:hover {
+      background-color: #c0392b;
+      box-shadow: 0 4px 8px rgba(192, 57, 43, 0.6);
+    }
+
+    /* Animation for task items */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Personal Task Manager</h1>
+
+  <input type="text" id="taskInput" placeholder="Enter a new task" />
+  <button id="addTaskBtn">Add Task</button>
+
+  <ul id="taskList">
+    <!-- Tasks will appear here -->
+  </ul>
+
+  <script>
+    const taskInput = document.getElementById('taskInput');
+    const addTaskBtn = document.getElementById('addTaskBtn');
+    const taskList = document.getElementById('taskList');
+
+    function addTask() {
+      const taskText = taskInput.value.trim();
+      if (taskText === '') {
+        alert('Please enter a task!');
+        return;
+      }
+
+      const li = document.createElement('li');
+
+      const taskSpan = document.createElement('span');
+      taskSpan.textContent = taskText;
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Delete';
+
+      deleteBtn.addEventListener('click', () => {
+        taskList.removeChild(li);
+      });
+
+      taskSpan.addEventListener('click', () => {
+        taskSpan.classList.toggle('completed');
+      });
+
+      li.appendChild(taskSpan);
+      li.appendChild(deleteBtn);
+
+      taskList.appendChild(li);
+
+      taskInput.value = '';
+      taskInput.focus();
+    }
+
+    addTaskBtn.addEventListener('click', addTask);
+
+    taskInput.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        addTask();
+      }
+    });
+  </script>
+</body>
+</html>
